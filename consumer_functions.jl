@@ -2,51 +2,7 @@
 ### for use with forage_revised jupyter notebook
 
 
-function find_metabolism(mass)
-    # i think these relations assume mass in grams, double check
-    mass = mass*1000;
-    
-# function for setting initial energy and metabolic costs from body mass
-    #Joules per gram
-    joules_per_gram = 20000; #varies between 7000 to 36000 [int] [J/g]
-    kjoules_per_gram = joules_per_gram / 1000;   # [int/int=int] [kJ/g]
 
-    #initial_energy_state = mass * kjoules_per_gram;
-
-    #mass at which you die, no fat or muscle
-    mass_starve = round(mass - ((0.02 * mass^1.19) + (0.1 * 0.38 * mass^1.0)));
-
-
-    #how many kj units does this organism have?
-    storage_kj = (mass - mass_starve) * kjoules_per_gram; #convert grams to kJ [int-float*int=float] [g-g*kJ/g=kJ]
-    #xc = 1;
-    #organismal_max = round(Int, xc + organismal_max_kj - 1); #unchanged if xc = 1, [kJ]
-
-    # Metabolic constants for the basal and field metabolic rate
-    b0_basal_met_rate = 0.018; #[watts] g^-0.75,
-    b0_field_met_rate = 0.047; #[watts] g^-0.75,
-
-    #costs: f/df + sleeping over active hours
-    cost_wh_basal = (b0_basal_met_rate * (mass^0.75)); #watt*hour, cost of basal metabolic rate in watt hours
-    cost_wh_field = (b0_field_met_rate * (mass^0.75)); #watt*hour, cost of field metabolic rate in watt hours
-
-    #Convert to kiloJoules
-    watt_hour_to_kJ = 3.6;  #  [float], [kJ/watthour]
-
-    #Convert kjg to 10kjg
-    watt_hour_to_kJ = watt_hour_to_kJ #/ xscale; # scales conversaion constant by xscale (currently is 1)
-
-    #metabolic costs per hour
-    cost_basal_hr = cost_wh_basal * watt_hour_to_kJ; # [float], [wh*kJ/wh=kJ/hr]
-    cost_field_hr = cost_wh_field * watt_hour_to_kJ; # [float], [wh*kJ/wh=kJ/hr]
-
-    # metabolic costs per second
-    cost_basal = cost_basal_hr / 60 / 60;   # [float], [kJ/s]
-    cost_field = cost_field_hr / 60 / 60;   # [float], [kJ/s]
-
-    return storage_kj, cost_basal, cost_field, storage_kj*2
-
-end
 
 #logelifespan=0.85+0.209logeMb
 function find_lifespan(mass)
